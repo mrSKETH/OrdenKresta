@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Цифровая База Знаний — Защита и Развитие</title>
+  <title>Цифровая База Знаний</title>
   <meta name="description" content="Платформа для обмена знаниями и технологиями в области цифровой безопасности" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,7 +40,6 @@
       overflow-x: hidden;
     }
 
-    /* Анимированный фон с сеткой */
     .matrix-bg {
       position: fixed;
       top: 0;
@@ -125,7 +124,7 @@
       }
     }
 
-    /* Анимированные линии */
+
     .scanlines {
       position: fixed;
       top: 0;
@@ -999,13 +998,13 @@
   </style>
 </head>
 <body>
-  <!-- Многослойный анимированный фон -->
+
   <div class="nebula-bg"></div>
   <div class="matrix-bg"></div>
   <div class="scanlines"></div>
   <div class="bg-animation" id="bgAnimation"></div>
 
-  <!-- Экран блокировки -->
+
   <div id="accessDenied" class="access-denied">
     <div class="denied-content">
       <h1 style="font-size: 3em; margin-bottom: 20px;">🚫</h1>
@@ -1046,7 +1045,7 @@
 
       <section class="hero">
         <div class="card reveal hologram-effect">
-          <h2>Профессиональная платформа</h2>
+          <h2>что?</h2>
           <p class="muted-block mb-20">
             Сообщество экспертов в области цифровой безопасности и разработки. 
             Обмен знаниями и передовыми технологиями.
@@ -1085,8 +1084,7 @@
       <section id="about" class="card reveal delay-2 mb-20 hologram-effect">
         <h3>О платформе</h3>
         <p class="muted-block">
-          Профессиональное сообщество, объединяющее специалистов в области кибербезопасности, 
-          разработки и исследований. Мы создаем и распространяем проверенные решения.
+          Профессиональное сообщество, объединяющее специалистов.
         </p>
       </section>
 
@@ -1168,7 +1166,7 @@
   <div id="advancedModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" style="color: var(--accent-3);">⚔️ Специальный раздел</h3>
+        <h3 class="modal-title" style="color: var(--accent-3);">✟ Красный крестр</h3>
         <button class="close-modal" onclick="SecuritySystem.closeAdvanced()">×</button>
       </div>
       <p class="muted-block mb-20">
@@ -1179,8 +1177,8 @@
         <a class="file" href="https://example.com/oculus_tool.pdf" target="_blank">
           <div class="file-icon">⚙️</div>
           <div class="file-content">
-            <div class="file-title">Инструмент Oculus</div>
-            <div class="file-meta">Специализированное решение</div>
+            <div class="file-title">Oculus</div>
+            <div class="file-meta">Сборка программ</div>
           </div>
         </a>
       </div>
@@ -1195,19 +1193,17 @@
     const SecuritySystem = (function() {
       'use strict';
       
-      // Разделенный пароль на несколько частей в разных местах кода
       const passwordPart1 = "DaPribydetSvami";
       const passwordPart2 = "OrdenKrestaIvozdast";
       const passwordPart3 = "VamSilyIDyhy";
       const passwordPart4 = "1096—1099";
 
-      // Вспомогательные переменные для запутывания
       const dummyVar1 = "access_key_verification_system";
       const dummyVar2 = "secure_authentication_protocol";
       const dummyVar3 = "advanced_encryption_module";
       
       function getValidPassword() {
-        // Собираем пароль из частей
+
         return passwordPart1 + passwordPart2 + passwordPart3 + passwordPart4;
       }
 
@@ -1226,10 +1222,10 @@
         return 'secure_' + generateFingerprint();
       }
 
-      // Функция проверки режима инкогнито и VPN
+
       function checkSecurity() {
         return new Promise((resolve) => {
-          // Проверка режима инкогнито
+
           const isIncognito = new Promise((resolveIncognito) => {
             const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
             if (!fs) {
@@ -1244,17 +1240,17 @@
             });
           });
 
-          // Проверка времени выполнения (косвенная проверка VPN)
+
           const startTime = performance.now();
           for (let i = 0; i < 1000000; i++) {
             Math.sqrt(i);
           }
           const executionTime = performance.now() - startTime;
           
-          // Проверка плагинов (в инкогнито обычно меньше плагинов)
+
           const pluginsLength = navigator.plugins.length;
           
-          // Проверка WebRTC (может выдать реальный IP при VPN)
+
           const checkWebRTC = new Promise((resolveWebRTC) => {
             const rtc = new RTCPeerConnection({iceServers: []});
             rtc.createDataChannel('');
@@ -1265,7 +1261,7 @@
             rtc.onicecandidate = (e) => {
               if (e.candidate) {
                 const candidate = e.candidate.candidate;
-                // Проверяем наличие локальных IP в кандидатах
+
                 if (candidate.includes('192.168.') || candidate.includes('10.') || candidate.includes('172.')) {
                   resolveWebRTC(true);
                 }
@@ -1278,9 +1274,9 @@
           Promise.all([isIncognito, checkWebRTC]).then(([incognito, webrtcLeak]) => {
             const isSuspicious = 
               incognito || 
-              executionTime > 100 || // Медленное выполнение может указывать на VPN
-              pluginsLength < 2 ||   // Мало плагинов - возможен инкогнито
-              webrtcLeak;           // Утечка локального IP через WebRTC
+              executionTime > 100 ||
+              pluginsLength < 2 ||   
+              webrtcLeak;   
             
             resolve(!isSuspicious);
           });
@@ -1289,7 +1285,7 @@
 
       function initBackground() {
         const container = document.getElementById('bgAnimation');
-        // Увеличиваем количество частиц
+
         for (let i = 0; i < 50; i++) {
           const particle = document.createElement('div');
           particle.className = 'particle';
@@ -1298,7 +1294,7 @@
           particle.style.width = Math.random() * 6 + 2 + 'px';
           particle.style.height = particle.style.width;
           
-          // Чередуем цвета частиц
+
           if (i % 3 === 0) {
             particle.style.background = 'var(--accent)';
           } else if (i % 3 === 1) {
@@ -1401,7 +1397,7 @@
         document.getElementById('site').style.display = 'none';
       }
 
-      // Дополнительные функции для запутывания
+
       function dummyFunction1() {
         return dummyVar1 + dummyVar2;
       }
@@ -1423,16 +1419,16 @@
       };
     })();
 
-    // Инициализация с проверкой безопасности
+
     document.addEventListener('DOMContentLoaded', function() {
-      // Сначала проверяем безопасность
+
       SecuritySystem.checkSecurity().then((isSecure) => {
         if (!isSecure) {
           SecuritySystem.showAccessDenied();
           return;
         }
 
-        // Если безопасно, продолжаем загрузку
+
         const splash = document.getElementById('splash');
         const splashCross = document.getElementById('splashCross');
         const site = document.getElementById('site');
@@ -1464,7 +1460,7 @@
           lastClick = now;
         });
 
-        // Плавная прокрутка
+
         document.querySelectorAll('nav a').forEach(anchor => {
           anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -1480,7 +1476,7 @@
           });
         });
 
-        // Анимация появления
+
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1497,10 +1493,11 @@
       });
     });
 
-    // Дополнительные переменные для запутывания
+
     const fakePassword1 = "incorrect_password_123";
     const fakePassword2 = "wrong_access_key_456";
     const fakePassword3 = "invalid_authentication_789";
   </script>
 </body>
 </html>
+
