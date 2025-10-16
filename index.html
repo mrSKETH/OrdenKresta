@@ -40,6 +40,45 @@
       overflow-x: hidden;
     }
 
+    /* Анимированный фон с сеткой */
+    .matrix-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: 0.1;
+      background: 
+        linear-gradient(90deg, var(--glass-border) 1px, transparent 1px) 0 0 / 50px 50px,
+        linear-gradient(0deg, var(--glass-border) 1px, transparent 1px) 0 0 / 50px 50px;
+      animation: matrixMove 20s linear infinite;
+    }
+
+    @keyframes matrixMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .nebula-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+      animation: nebulaPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes nebulaPulse {
+      0% { opacity: 0.3; transform: scale(1); }
+      100% { opacity: 0.6; transform: scale(1.1); }
+    }
+
     .bg-animation {
       position: fixed;
       top: 0;
@@ -57,9 +96,90 @@
       animation: float 6s infinite linear;
     }
 
+    .particle:nth-child(3n) {
+      background: var(--accent-2);
+      animation-duration: 8s;
+    }
+
+    .particle:nth-child(3n+1) {
+      background: var(--accent-3);
+      animation-duration: 10s;
+    }
+
     @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      50% { transform: translateY(-100px) rotate(180deg); opacity: 0.3; }
+      0%, 100% { 
+        transform: translateY(0) rotate(0deg) scale(1); 
+        opacity: 0; 
+      }
+      25% {
+        transform: translateY(-25px) rotate(90deg) scale(1.2);
+        opacity: 0.5;
+      }
+      50% { 
+        transform: translateY(-50px) rotate(180deg) scale(1); 
+        opacity: 0.8; 
+      }
+      75% {
+        transform: translateY(-25px) rotate(270deg) scale(0.8);
+        opacity: 0.5;
+      }
+    }
+
+    /* Анимированные линии */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: linear-gradient(
+        to bottom,
+        transparent 50%,
+        rgba(139, 92, 246, 0.03) 50%
+      );
+      background-size: 100% 4px;
+      animation: scanline 2s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .hologram-effect {
+      position: relative;
+    }
+
+    .hologram-effect::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, 
+        transparent, 
+        var(--accent-glow), 
+        transparent, 
+        var(--accent-2-glow), 
+        transparent
+      );
+      border-radius: var(--radius);
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      animation: hologram 3s ease-in-out infinite;
+    }
+
+    .hologram-effect:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes hologram {
+      0%, 100% { opacity: 0.3; filter: hue-rotate(0deg); }
+      50% { opacity: 0.7; filter: hue-rotate(180deg); }
     }
 
     .wrap {
@@ -75,6 +195,28 @@
       margin-bottom: 40px;
       padding: 20px 0;
       border-bottom: 1px solid var(--glass-border);
+      position: relative;
+    }
+
+    .header-glow {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        var(--accent), 
+        var(--accent-2), 
+        var(--accent), 
+        transparent
+      );
+      animation: headerGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes headerGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
     }
 
     .logo {
@@ -83,6 +225,7 @@
       gap: 16px;
       cursor: pointer;
       transition: var(--transition);
+      position: relative;
     }
 
     .logo:hover {
@@ -104,6 +247,21 @@
       transition: var(--transition);
       position: relative;
       overflow: hidden;
+      animation: logoGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoGlow {
+      0% { 
+        box-shadow: 
+          0 8px 32px var(--accent-glow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      }
+      100% { 
+        box-shadow: 
+          0 12px 48px var(--accent-glow),
+          0 0 60px var(--accent-glow),
+          inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
     }
 
     .mark::before {
@@ -125,10 +283,16 @@
     .logo-text h1 {
       font-family: 'Orbitron', sans-serif;
       font-size: 24px;
-      background: linear-gradient(45deg, #e6eef8, var(--accent));
+      background: linear-gradient(45deg, #e6eef8, var(--accent), var(--accent-2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 4px;
+      animation: textShine 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes textShine {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
     }
 
     .logo-text .muted-block {
@@ -149,9 +313,25 @@
       border-radius: 8px;
       transition: var(--transition);
       position: relative;
+      overflow: hidden;
     }
 
     nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+      transition: left 0.6s;
+    }
+
+    nav a:hover::before {
+      left: 100%;
+    }
+
+    nav a::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -167,7 +347,7 @@
       color: #e6eef8;
     }
 
-    nav a:hover::before {
+    nav a:hover::after {
       width: 80%;
     }
 
@@ -209,11 +389,30 @@
       cursor: pointer;
       transition: var(--transition);
       animation: pulse 2s ease-in-out infinite alternate;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .splash .cross::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+      transform: rotate(45deg);
+      animation: crossShine 3s linear infinite;
+    }
+
+    @keyframes crossShine {
+      0% { transform: rotate(45deg) translateX(-100%); }
+      100% { transform: rotate(45deg) translateX(100%); }
     }
 
     @keyframes pulse {
       0% { transform: scale(1); box-shadow: 0 20px 60px rgba(0,0,0,.6); }
-      100% { transform: scale(1.05); box-shadow: 0 25px 80px var(--accent-glow); }
+      100% { transform: scale(1.05); box-shadow: 0 25px 80px var(--accent-glow), 0 0 100px var(--accent-glow); }
     }
 
     .splash .cross:hover {
@@ -224,6 +423,12 @@
       color: var(--muted);
       font-size: 18px;
       max-width: 400px;
+      animation: textPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes textPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
     }
 
     #site {
@@ -301,6 +506,29 @@
       background: var(--glass);
       border-radius: 12px;
       border: 1px solid var(--glass-border);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+      transition: left 0.6s;
+    }
+
+    .stat:hover::before {
+      left: 100%;
+    }
+
+    .stat:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
     }
 
     .stat-number {
@@ -311,6 +539,12 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 8px;
+      animation: numberGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes numberGlow {
+      0% { text-shadow: 0 0 5px var(--accent-glow); }
+      100% { text-shadow: 0 0 20px var(--accent-glow), 0 0 30px var(--accent-2-glow); }
     }
 
     .stat-label {
@@ -376,6 +610,12 @@
 
     .division-icon {
       font-size: 24px;
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
     }
 
     .files-grid {
@@ -430,6 +670,12 @@
       background: var(--glass);
       border-radius: 10px;
       flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .file:hover .file-icon {
+      transform: scale(1.1) rotate(10deg);
+      background: var(--accent-glow);
     }
 
     .file-content {
@@ -451,6 +697,28 @@
       padding: 30px 0;
       border-top: 1px solid var(--glass-border);
       color: var(--muted);
+      position: relative;
+    }
+
+    .footer-glow {
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        var(--accent-2), 
+        var(--accent-3), 
+        var(--accent-2), 
+        transparent
+      );
+      animation: footerGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes footerGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.8; }
     }
 
     .footer-content {
@@ -476,7 +744,7 @@
       align-items: center;
       justify-content: center;
       background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(20px);
       z-index: 2000;
     }
 
@@ -486,8 +754,14 @@
     }
 
     @keyframes modalAppear {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from { 
+        opacity: 0; 
+        transform: scale(0.8) rotateX(-10deg);
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1) rotateX(0deg);
+      }
     }
 
     .modal-content {
@@ -495,11 +769,20 @@
       padding: 30px;
       border-radius: var(--radius);
       border: 1px solid var(--glass-border);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      box-shadow: 
+        0 20px 60px rgba(0,0,0,0.5),
+        0 0 0 1px var(--accent-glow);
       max-width: 500px;
       width: 90%;
       max-height: 90vh;
       overflow-y: auto;
+      position: relative;
+      animation: modalGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes modalGlow {
+      0%, 100% { box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px var(--accent-glow); }
+      50% { box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 20px var(--accent-glow), 0 0 40px var(--accent-2-glow); }
     }
 
     .modal-header {
@@ -532,6 +815,7 @@
     .close-modal:hover {
       background: var(--glass);
       color: #e6eef8;
+      transform: rotate(90deg);
     }
 
     .btn {
@@ -610,7 +894,40 @@
     .input-field:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 2px var(--accent-glow);
+      box-shadow: 0 0 0 2px var(--accent-glow), 0 0 20px var(--accent-glow);
+    }
+
+    /* Анимация запрета доступа */
+    .access-denied {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      backdrop-filter: blur(20px);
+    }
+
+    .access-denied.active {
+      display: flex;
+      animation: denyAppear 0.5s ease-out;
+    }
+
+    @keyframes denyAppear {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .denied-content {
+      text-align: center;
+      color: #ef4444;
+      animation: denyPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes denyPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
     }
 
     @media (max-width: 1024px) {
@@ -682,7 +999,23 @@
   </style>
 </head>
 <body>
+  <!-- Многослойный анимированный фон -->
+  <div class="nebula-bg"></div>
+  <div class="matrix-bg"></div>
+  <div class="scanlines"></div>
   <div class="bg-animation" id="bgAnimation"></div>
+
+  <!-- Экран блокировки -->
+  <div id="accessDenied" class="access-denied">
+    <div class="denied-content">
+      <h1 style="font-size: 3em; margin-bottom: 20px;">🚫</h1>
+      <h2 style="font-family: 'Orbitron', sans-serif; margin-bottom: 20px;">ДОСТУП ЗАПРЕЩЕН</h2>
+      <p style="color: var(--muted); max-width: 400px;">
+        Обнаружены признаки использования VPN или режима инкогнито.<br>
+        Доступ к платформе возможен только с доверенных устройств.
+      </p>
+    </div>
+  </div>
 
   <div id="splash" class="splash">
     <div class="inner">
@@ -696,6 +1029,7 @@
   <div id="site">
     <div class="wrap">
       <header>
+        <div class="header-glow"></div>
         <div class="logo" id="logo">
           <div id="mark" class="mark">✟</div>
           <div class="logo-text">
@@ -711,7 +1045,7 @@
       </header>
 
       <section class="hero">
-        <div class="card reveal">
+        <div class="card reveal hologram-effect">
           <h2>Профессиональная платформа</h2>
           <p class="muted-block mb-20">
             Сообщество экспертов в области цифровой безопасности и разработки. 
@@ -734,7 +1068,7 @@
           </div>
         </div>
 
-        <div class="card reveal delay-1">
+        <div class="card reveal delay-1 hologram-effect">
           <h3>Быстрый доступ</h3>
           <div class="files" style="margin-top: 15px;">
             <a class="file" href="https://example.com/readme.pdf" target="_blank">
@@ -748,7 +1082,7 @@
         </div>
       </section>
 
-      <section id="about" class="card reveal delay-2 mb-20">
+      <section id="about" class="card reveal delay-2 mb-20 hologram-effect">
         <h3>О платформе</h3>
         <p class="muted-block">
           Профессиональное сообщество, объединяющее специалистов в области кибербезопасности, 
@@ -759,7 +1093,7 @@
       <section id="divisions">
         <h3 class="reveal">Направления работы</h3>
         <div class="divisions-grid">
-          <div class="division violet reveal">
+          <div class="division violet reveal hologram-effect">
             <h3><span class="division-icon">🛡️</span> Защитные системы</h3>
             <p class="muted-block">Разработка и внедрение систем безопасности. Анализ угроз и создание защитных механизмов.</p>
             <ul style="color: var(--muted); margin-top: 15px; padding-left: 20px;">
@@ -769,7 +1103,7 @@
             </ul>
           </div>
 
-          <div class="division yellow reveal delay-2">
+          <div class="division yellow reveal delay-2 hologram-effect">
             <h3><span class="division-icon">🔧</span> Техническая разработка</h3>
             <p class="muted-block">Создание инструментов и технологий. Инновационные решения для сложных задач.</p>
             <ul style="color: var(--muted); margin-top: 15px; padding-left: 20px;">
@@ -781,7 +1115,7 @@
         </div>
       </section>
 
-      <section id="files" class="card reveal delay-3 mt-30">
+      <section id="files" class="card reveal delay-3 mt-30 hologram-effect">
         <h3>Ресурсы и материалы</h3>
         <p class="muted-block">Публичные материалы и техническая документация.</p>
         
@@ -797,6 +1131,7 @@
       </section>
 
       <footer>
+        <div class="footer-glow"></div>
         <div class="footer-content">
           <div>
             <div>© 2025 Цифровая База Знаний</div>
@@ -863,11 +1198,9 @@
       // Разделенный пароль на несколько частей в разных местах кода
       const passwordPart1 = "DaPribydetSvami";
       const passwordPart2 = "OrdenKrestaIvozdast";
-      const passwordЗ = "VamSilyIDyhy";
+      const passwordPart3 = "VamSilyIDyhy";
       const passwordPart4 = "1096—1099";
-      const Password1 = "incorrect_password_123";
-      const Password2 = "wrong_access_key_456";
-      const Password3 = "invalid_authentication_789";
+
       // Вспомогательные переменные для запутывания
       const dummyVar1 = "access_key_verification_system";
       const dummyVar2 = "secure_authentication_protocol";
@@ -875,7 +1208,7 @@
       
       function getValidPassword() {
         // Собираем пароль из частей
-        return passwordPart1 + passwordPart2 + passwordЗ + passwordPart4;
+        return passwordPart1 + passwordPart2 + passwordPart3 + passwordPart4;
       }
 
       function generateFingerprint() {
@@ -893,18 +1226,89 @@
         return 'secure_' + generateFingerprint();
       }
 
+      // Функция проверки режима инкогнито и VPN
+      function checkSecurity() {
+        return new Promise((resolve) => {
+          // Проверка режима инкогнито
+          const isIncognito = new Promise((resolveIncognito) => {
+            const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+            if (!fs) {
+              resolveIncognito(false);
+              return;
+            }
+            
+            fs(window.TEMPORARY, 100, () => {
+              resolveIncognito(false);
+            }, () => {
+              resolveIncognito(true);
+            });
+          });
+
+          // Проверка времени выполнения (косвенная проверка VPN)
+          const startTime = performance.now();
+          for (let i = 0; i < 1000000; i++) {
+            Math.sqrt(i);
+          }
+          const executionTime = performance.now() - startTime;
+          
+          // Проверка плагинов (в инкогнито обычно меньше плагинов)
+          const pluginsLength = navigator.plugins.length;
+          
+          // Проверка WebRTC (может выдать реальный IP при VPN)
+          const checkWebRTC = new Promise((resolveWebRTC) => {
+            const rtc = new RTCPeerConnection({iceServers: []});
+            rtc.createDataChannel('');
+            rtc.createOffer()
+              .then(offer => rtc.setLocalDescription(offer))
+              .catch(() => resolveWebRTC(false));
+            
+            rtc.onicecandidate = (e) => {
+              if (e.candidate) {
+                const candidate = e.candidate.candidate;
+                // Проверяем наличие локальных IP в кандидатах
+                if (candidate.includes('192.168.') || candidate.includes('10.') || candidate.includes('172.')) {
+                  resolveWebRTC(true);
+                }
+              }
+            };
+            
+            setTimeout(() => resolveWebRTC(false), 1000);
+          });
+
+          Promise.all([isIncognito, checkWebRTC]).then(([incognito, webrtcLeak]) => {
+            const isSuspicious = 
+              incognito || 
+              executionTime > 100 || // Медленное выполнение может указывать на VPN
+              pluginsLength < 2 ||   // Мало плагинов - возможен инкогнито
+              webrtcLeak;           // Утечка локального IP через WebRTC
+            
+            resolve(!isSuspicious);
+          });
+        });
+      }
+
       function initBackground() {
         const container = document.getElementById('bgAnimation');
-        for (let i = 0; i < 15; i++) {
+        // Увеличиваем количество частиц
+        for (let i = 0; i < 50; i++) {
           const particle = document.createElement('div');
           particle.className = 'particle';
           particle.style.left = Math.random() * 100 + '%';
           particle.style.top = Math.random() * 100 + '%';
-          particle.style.width = Math.random() * 4 + 2 + 'px';
+          particle.style.width = Math.random() * 6 + 2 + 'px';
           particle.style.height = particle.style.width;
-          particle.style.background = i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--accent-2)' : 'var(--accent-3)';
-          particle.style.animationDelay = Math.random() * 6 + 's';
-          particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+          
+          // Чередуем цвета частиц
+          if (i % 3 === 0) {
+            particle.style.background = 'var(--accent)';
+          } else if (i % 3 === 1) {
+            particle.style.background = 'var(--accent-2)';
+          } else {
+            particle.style.background = 'var(--accent-3)';
+          }
+          
+          particle.style.animationDelay = Math.random() * 10 + 's';
+          particle.style.animationDuration = (Math.random() * 8 + 6) + 's';
           container.appendChild(particle);
         }
       }
@@ -991,6 +1395,12 @@
         document.body.appendChild(modal);
       }
 
+      function showAccessDenied() {
+        document.getElementById('accessDenied').classList.add('active');
+        document.getElementById('splash').style.display = 'none';
+        document.getElementById('site').style.display = 'none';
+      }
+
       // Дополнительные функции для запутывания
       function dummyFunction1() {
         return dummyVar1 + dummyVar2;
@@ -1006,76 +1416,91 @@
         verifyAccess,
         closeAdvanced,
         initBackground,
+        checkSecurity,
+        showAccessDenied,
         dummyFunction1,
         dummyFunction2
       };
     })();
 
-    // Инициализация
+    // Инициализация с проверкой безопасности
     document.addEventListener('DOMContentLoaded', function() {
-      const splash = document.getElementById('splash');
-      const splashCross = document.getElementById('splashCross');
-      const site = document.getElementById('site');
-
-      splashCross.addEventListener('click', () => {
-        splashCross.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        splashCross.style.transform = 'scale(1.2) rotate(10deg)';
-        splashCross.style.opacity = '0.7';
-        
-        setTimeout(() => {
-          splashCross.style.transform = 'scale(25) rotate(45deg)';
-          splashCross.style.opacity = '0';
-        }, 300);
-        
-        setTimeout(() => {
-          splash.classList.add('hidden');
-          site.classList.add('visible');
-          SecuritySystem.initBackground();
-        }, 800);
-      });
-
-      const logo = document.getElementById('logo');
-      let lastClick = 0;
-      logo.addEventListener('click', (e) => {
-        const now = Date.now();
-        if (e.altKey && now - lastClick < 400) {
-          SecuritySystem.checkAccessRights();
+      // Сначала проверяем безопасность
+      SecuritySystem.checkSecurity().then((isSecure) => {
+        if (!isSecure) {
+          SecuritySystem.showAccessDenied();
+          return;
         }
-        lastClick = now;
-      });
 
-      // Плавная прокрутка
-      document.querySelectorAll('nav a').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          const targetElement = document.querySelector(targetId);
+        // Если безопасно, продолжаем загрузку
+        const splash = document.getElementById('splash');
+        const splashCross = document.getElementById('splashCross');
+        const site = document.getElementById('site');
+
+        splashCross.addEventListener('click', () => {
+          splashCross.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          splashCross.style.transform = 'scale(1.2) rotate(10deg)';
+          splashCross.style.opacity = '0.7';
           
-          if (targetElement) {
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
+          setTimeout(() => {
+            splashCross.style.transform = 'scale(25) rotate(45deg)';
+            splashCross.style.opacity = '0';
+          }, 300);
+          
+          setTimeout(() => {
+            splash.classList.add('hidden');
+            site.classList.add('visible');
+            SecuritySystem.initBackground();
+          }, 800);
         });
-      });
 
-      // Анимация появления
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.animationPlayState = 'running';
+        const logo = document.getElementById('logo');
+        let lastClick = 0;
+        logo.addEventListener('click', (e) => {
+          const now = Date.now();
+          if (e.altKey && now - lastClick < 400) {
+            SecuritySystem.checkAccessRights();
           }
+          lastClick = now;
         });
-      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-      document.querySelectorAll('.reveal').forEach(el => {
-        observer.observe(el);
+        // Плавная прокрутка
+        document.querySelectorAll('nav a').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          });
+        });
+
+        // Анимация появления
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.animationPlayState = 'running';
+            }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+          observer.observe(el);
+        });
+
+        console.log('%c🔒 Система защиты активирована', 'color: #8b5cf6; font-size: 14px; font-weight: bold;');
       });
-
-      console.log('%c🔒 Система защиты активирована', 'color: #8b5cf6; font-size: 14px; font-weight: bold;');
     });
+
+    // Дополнительные переменные для запутывания
+    const fakePassword1 = "incorrect_password_123";
+    const fakePassword2 = "wrong_access_key_456";
+    const fakePassword3 = "invalid_authentication_789";
   </script>
 </body>
 </html>
-
