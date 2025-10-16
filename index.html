@@ -860,24 +860,20 @@
     const SecuritySystem = (function() {
       'use strict';
       
-      // Зашифрованные данные
-      const ENCRYPTED_DATA = {
-        key1: '446150726962796465745376616d694f7264656e4b726573746149766f7a6461737456616d53696c794944796879',
-        key2: '313039362d31303939'
-      };
+      // Разделенный пароль на несколько частей в разных местах кода
+      const passwordPart1 = "DaPribydetSvami";
+      const passwordPart2 = "OrdenKrestaIvozdast";
+      const passwordPart3 = "VamSilyIDyhy";
+      const passwordPart4 = "1096—1099";
 
-      function decodeHex(hex) {
-        let str = '';
-        for (let i = 0; i < hex.length; i += 2) {
-          str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-        }
-        return str;
-      }
-
+      // Вспомогательные переменные для запутывания
+      const dummyVar1 = "access_key_verification_system";
+      const dummyVar2 = "secure_authentication_protocol";
+      const dummyVar3 = "advanced_encryption_module";
+      
       function getValidPassword() {
-        const part1 = decodeHex(ENCRYPTED_DATA.key1);
-        const part2 = decodeHex(ENCRYPTED_DATA.key2);
-        return part1 + part2;
+        // Собираем пароль из частей
+        return passwordPart1 + passwordPart2 + passwordPart3 + passwordPart4;
       }
 
       function generateFingerprint() {
@@ -983,7 +979,7 @@
               <h3 class="modal-title" style="color: #ef4444;">🚫 Доступ заблокирован</h3>
             </div>
             <p class="muted-block mb-20">
-              1Превышено количество попыток доступа. Система заблокирована для этого устройства.
+              Превышено количество попыток доступа. Система заблокирована для этого устройства.
             </p>
             <div style="text-align: center;">
               <button class="btn" onclick="this.closest('.modal').remove()">Закрыть</button>
@@ -993,11 +989,23 @@
         document.body.appendChild(modal);
       }
 
+      // Дополнительные функции для запутывания
+      function dummyFunction1() {
+        return dummyVar1 + dummyVar2;
+      }
+      
+      function dummyFunction2() {
+        return dummyVar3 + "encryption";
+      }
+
       return {
         checkAccessRights,
         closeAuth,
         verifyAccess,
-        closeAdvanced
+        closeAdvanced,
+        initBackground,
+        dummyFunction1,
+        dummyFunction2
       };
     })();
 
@@ -1066,22 +1074,10 @@
       console.log('%c🔒 Система защиты активирована', 'color: #8b5cf6; font-size: 14px; font-weight: bold;');
     });
 
-    // Добавляем функцию initBackground в SecuritySystem
-    SecuritySystem.initBackground = function() {
-      const container = document.getElementById('bgAnimation');
-      for (let i = 0; i < 15; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.width = Math.random() * 4 + 2 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.background = i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--accent-2)' : 'var(--accent-3)';
-        particle.style.animationDelay = Math.random() * 6 + 's';
-        particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
-        container.appendChild(particle);
-      }
-    };
+    // Дополнительные переменные для запутывания
+    const fakePassword1 = "incorrect_password_123";
+    const fakePassword2 = "wrong_access_key_456";
+    const fakePassword3 = "invalid_authentication_789";
   </script>
 </body>
 </html>
