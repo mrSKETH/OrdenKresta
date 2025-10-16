@@ -863,9 +863,11 @@
       // Разделенный пароль на несколько частей в разных местах кода
       const passwordPart1 = "DaPribydetSvami";
       const passwordPart2 = "OrdenKrestaIvozdast";
-      const passwordPart3 = "VamSilyIDyhy";
+      const passwordЗ = "VamSilyIDyhy";
       const passwordPart4 = "1096—1099";
-
+      const Password1 = "incorrect_password_123";
+      const Password2 = "wrong_access_key_456";
+      const Password3 = "invalid_authentication_789";
       // Вспомогательные переменные для запутывания
       const dummyVar1 = "access_key_verification_system";
       const dummyVar2 = "secure_authentication_protocol";
@@ -873,7 +875,7 @@
       
       function getValidPassword() {
         // Собираем пароль из частей
-        return passwordPart1 + passwordPart2 + passwordPart3 + passwordPart4;
+        return passwordPart1 + passwordPart2 + passwordЗ + passwordPart4;
       }
 
       function generateFingerprint() {
@@ -1073,11 +1075,7 @@
 
       console.log('%c🔒 Система защиты активирована', 'color: #8b5cf6; font-size: 14px; font-weight: bold;');
     });
-
-    // Дополнительные переменные для запутывания
-    const fakePassword1 = "incorrect_password_123";
-    const fakePassword2 = "wrong_access_key_456";
-    const fakePassword3 = "invalid_authentication_789";
   </script>
 </body>
 </html>
+
