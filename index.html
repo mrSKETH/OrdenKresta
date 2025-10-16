@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Цифровая База Знаний — Защита и Развитие</title>
+  <meta name="description" content="Платформа для обмена знаниями и технологиями в области цифровой безопасности" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #071027;
+      --card: #081428;
+      --accent: #8b5cf6;
+      --accent-glow: rgba(139, 92, 246, 0.3);
+      --accent-2: #f59e0b;
+      --accent-2-glow: rgba(245, 158, 11, 0.3);
+      --accent-3: #10b981;
+      --accent-3-glow: rgba(16, 185, 129, 0.3);
+      --muted: #94a3b8;
+      --glass: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --radius: 16px;
+      --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #030617 0%, #071027 50%, #0a1222 100%);
+      color: #e6eef8;
+      font-family: 'Rajdhani', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    .particle {
+      position: absolute;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: float 6s infinite linear;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      50% { transform: translateY(-100px) rotate(180deg); opacity: 0.3; }
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .logo:hover {
+      transform: translateX(5px);
+    }
+
+    .mark {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--accent), #6d28d9);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 32px;
+      box-shadow: 
+        0 8px 32px var(--accent-glow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mark::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: rotate(45deg);
+      transition: all 0.6s;
+    }
+
+    .logo:hover .mark::before {
+      transform: rotate(45deg) translate(50%, 50%);
+    }
+
+    .logo-text h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      background: linear-gradient(45deg, #e6eef8, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .logo-text .muted-block {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: var(--transition);
+      transform: translateX(-50%);
+    }
+
+    nav a:hover {
+      color: #e6eef8;
+    }
+
+    nav a:hover::before {
+      width: 80%;
+    }
+
+    .splash {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #030617, #071027);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .splash.hidden {
+      display: none;
+    }
+
+    .splash .inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      text-align: center;
+    }
+
+    .splash .cross {
+      width: 160px;
+      height: 160px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      font-size: 64px;
+      color: white;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      box-shadow: 
+        0 20px 60px rgba(0,0,0,.6),
+        0 0 0 1px rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: var(--transition);
+      animation: pulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 20px 60px rgba(0,0,0,.6); }
+      100% { transform: scale(1.05); box-shadow: 0 25px 80px var(--accent-glow); }
+    }
+
+    .splash .cross:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .splash-text {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 400px;
+    }
+
+    #site {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #site.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        0 8px 32px rgba(2, 6, 23, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
+      transition: left 0.6s;
+    }
+
+    .card:hover::before {
+      left: 100%;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 
+        0 15px 40px rgba(2, 6, 23, 0.6),
+        0 0 20px var(--accent-glow);
+    }
+
+    .card h2, .card h3 {
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 16px;
+      background: linear-gradient(45deg, #e6eef8, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .stat {
+      text-align: center;
+      padding: 20px;
+      background: var(--glass);
+      border-radius: 12px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .stat-number {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(45deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .divisions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin: 30px 0;
+    }
+
+    .division {
+      padding: 30px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--glass), rgba(255,255,255,0.02));
+      border: 1px solid var(--glass-border);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .division::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      transition: var(--transition);
+    }
+
+    .division.violet::before {
+      background: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .division.yellow::before {
+      background: var(--accent-2);
+      box-shadow: 0 0 20px var(--accent-2-glow);
+    }
+
+    .division.green::before {
+      background: var(--accent-3);
+      box-shadow: 0 0 20px var(--accent-3-glow);
+    }
+
+    .division:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .division h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .division-icon {
+      font-size: 24px;
+    }
+
+    .files-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .file {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--muted);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transition: left 0.6s;
+    }
+
+    .file:hover::before {
+      left: 100%;
+    }
+
+    .file:hover {
+      transform: translateX(8px);
+      border-color: var(--accent);
+      color: #e6eef8;
+    }
+
+    .file-icon {
+      font-size: 24px;
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      background: var(--glass);
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .file-content {
+      flex: 1;
+    }
+
+    .file-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .file-meta {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding: 30px 0;
+      border-top: 1px solid var(--glass-border);
+      color: var(--muted);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .secret-hint {
+      font-size: 12px;
+      background: var(--glass);
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+    }
+
+    .modal.active {
+      display: flex;
+      animation: modalAppear 0.3s ease-out;
+    }
+
+    @keyframes modalAppear {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: var(--card);
+      padding: 30px;
+      border-radius: var(--radius);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 20px;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      transition: var(--transition);
+    }
+
+    .close-modal:hover {
+      background: var(--glass);
+      color: #e6eef8;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), #7c3aed);
+      border: none;
+      color: white;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px var(--accent-glow);
+    }
+
+    .btn-alt {
+      padding: 12px 24px;
+      border-radius: 8px;
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--muted);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-alt:hover {
+      border-color: var(--accent);
+      color: #e6eef8;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      color: #e6eef8;
+      font-family: 'Rajdhani', sans-serif;
+      transition: var(--transition);
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+      nav {
+        justify-content: center;
+      }
+      .divisions-grid {
+        grid-template-columns: 1fr;
+      }
+      .files-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .muted-block {
+      color: var(--muted);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mb-20 {
+      margin-bottom: 20px;
+    }
+
+    .mt-30 {
+      margin-top: 30px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: revealAnim 0.8s ease forwards;
+    }
+
+    @keyframes revealAnim {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+  </style>
+</head>
+<body>
+  <div class="bg-animation" id="bgAnimation"></div>
+
+  <div id="splash" class="splash">
+    <div class="inner">
+      <div id="splashCross" class="cross" title="Нажмите для входа">✟</div>
+      <div class="splash-text">
+        Цифровая База Знаний — Платформа для профессионалов
+      </div>
+    </div>
+  </div>
+
+  <div id="site">
+    <div class="wrap">
+      <header>
+        <div class="logo" id="logo">
+          <div id="mark" class="mark">✟</div>
+          <div class="logo-text">
+            <h1>Цифровая База Знаний</h1>
+            <div class="muted-block">Защита · Разработка · Инновации</div>
+          </div>
+        </div>
+        <nav>
+          <a href="#about">О платформе</a>
+          <a href="#divisions">Направления</a>
+          <a href="#files">Ресурсы</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="card reveal">
+          <h2>Профессиональная платформа</h2>
+          <p class="muted-block mb-20">
+            Сообщество экспертов в области цифровой безопасности и разработки. 
+            Обмен знаниями и передовыми технологиями.
+          </p>
+          
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-number">***</div>
+              <div class="stat-label">Активных проектов</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">**%</div>
+              <div class="stat-label">Эффективность решений</div>
+            </div>
+            <div class="stat">
+              <div class="stat-number">*+</div>
+              <div class="stat-label">Лет развития</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card reveal delay-1">
+          <h3>Быстрый доступ</h3>
+          <div class="files" style="margin-top: 15px;">
+            <a class="file" href="https://example.com/readme.pdf" target="_blank">
+              <div class="file-icon">📊</div>
+              <div class="file-content">
+                <div class="file-title">Введение в платформу</div>
+                <div class="file-meta">· Обновлен 16 октября 2025</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="card reveal delay-2 mb-20">
+        <h3>О платформе</h3>
+        <p class="muted-block">
+          Профессиональное сообщество, объединяющее специалистов в области кибербезопасности, 
+          разработки и исследований. Мы создаем и распространяем проверенные решения.
+        </p>
+      </section>
+
+      <section id="divisions">
+        <h3 class="reveal">Направления работы</h3>
+        <div class="divisions-grid">
+          <div class="division violet reveal">
+            <h3><span class="division-icon">🛡️</span> Защитные системы</h3>
+            <p class="muted-block">Разработка и внедрение систем безопасности. Анализ угроз и создание защитных механизмов.</p>
+            <ul style="color: var(--muted); margin-top: 15px; padding-left: 20px;">
+              <li>Анализ безопасности</li>
+              <li>Разработка защиты</li>
+              <li>Мониторинг систем</li>
+            </ul>
+          </div>
+
+          <div class="division yellow reveal delay-2">
+            <h3><span class="division-icon">🔧</span> Техническая разработка</h3>
+            <p class="muted-block">Создание инструментов и технологий. Инновационные решения для сложных задач.</p>
+            <ul style="color: var(--muted); margin-top: 15px; padding-left: 20px;">
+              <li>Разработка ПО</li>
+              <li>Системная архитектура</li>
+              <li>Техническая поддержка</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="files" class="card reveal delay-3 mt-30">
+        <h3>Ресурсы и материалы</h3>
+        <p class="muted-block">Публичные материалы и техническая документация.</p>
+        
+        <div class="files-grid">
+          <a class="file" href="https://example.com/arch_guide.pdf" target="_blank">
+            <div class="file-icon">🔐</div>
+            <div class="file-content">
+              <div class="file-title">Руководство по Arch Linux</div>
+              <div class="file-meta">· Установка и настройка</div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-content">
+          <div>
+            <div>© 2025 Цифровая База Знаний</div>
+            <div class="muted-block" style="margin-top: 8px; font-size: 12px;">
+              Все материалы защищены
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <div id="authModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Проверка доступа</h3>
+        <button class="close-modal" onclick="SecuritySystem.closeAuth()">×</button>
+      </div>
+      <p class="muted-block mb-20">
+        Для доступа к расширенным функциям требуется авторизация.
+      </p>
+      <div class="input-group">
+        <label class="input-label">Ключ доступа:</label>
+        <input id="authKey" type="password" class="input-field" placeholder="Введите ключ..." />
+      </div>
+      <div id="authResult" class="muted-block mb-20" style="font-size: 14px;"></div>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button class="btn-alt" onclick="SecuritySystem.closeAuth()">Отмена</button>
+        <button class="btn" onclick="SecuritySystem.verifyAccess()">Проверить</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="advancedModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: var(--accent-3);">⚔️ Специальный раздел</h3>
+        <button class="close-modal" onclick="SecuritySystem.closeAdvanced()">×</button>
+      </div>
+      <p class="muted-block mb-20">
+        Доступ к специализированным инструментам и ресурсам.
+      </p>
+      
+      <div class="files">
+        <a class="file" href="https://example.com/oculus_tool.pdf" target="_blank">
+          <div class="file-icon">⚙️</div>
+          <div class="file-content">
+            <div class="file-title">Инструмент Oculus</div>
+            <div class="file-meta">Специализированное решение</div>
+          </div>
+        </a>
+      </div>
+      
+      <div style="text-align: right; margin-top: 20px;">
+        <button class="btn" onclick="SecuritySystem.closeAdvanced()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SecuritySystem = (function() {
+      'use strict';
+      
+      // Зашифрованные данные
+      const ENCRYPTED_DATA = {
+        key1: '446150726962796465745376616d694f7264656e4b726573746149766f7a6461737456616d53696c794944796879',
+        key2: '313039362d31303939'
+      };
+
+      function decodeHex(hex) {
+        let str = '';
+        for (let i = 0; i < hex.length; i += 2) {
+          str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+        }
+        return str;
+      }
+
+      function getValidPassword() {
+        const part1 = decodeHex(ENCRYPTED_DATA.key1);
+        const part2 = decodeHex(ENCRYPTED_DATA.key2);
+        return part1 + part2;
+      }
+
+      function generateFingerprint() {
+        const components = [
+          navigator.userAgent,
+          navigator.platform,
+          screen.width + 'x' + screen.height,
+          navigator.language,
+          new Date().getTimezoneOffset()
+        ];
+        return btoa(components.join('|')).replace(/[=+/]/g, '');
+      }
+
+      function getStorageKey() {
+        return 'secure_' + generateFingerprint();
+      }
+
+      function initBackground() {
+        const container = document.getElementById('bgAnimation');
+        for (let i = 0; i < 15; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.top = Math.random() * 100 + '%';
+          particle.style.width = Math.random() * 4 + 2 + 'px';
+          particle.style.height = particle.style.width;
+          particle.style.background = i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--accent-2)' : 'var(--accent-3)';
+          particle.style.animationDelay = Math.random() * 6 + 's';
+          particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+          container.appendChild(particle);
+        }
+      }
+
+      function checkAccessRights() {
+        const storageKey = getStorageKey();
+        const attempts = localStorage.getItem(storageKey + '_attempts') || 0;
+        
+        if (parseInt(attempts) >= 2) {
+          showBlockedMessage();
+          return;
+        }
+        
+        openAuth();
+      }
+
+      function openAuth() {
+        document.getElementById('authKey').value = '';
+        document.getElementById('authResult').innerText = '';
+        document.getElementById('authModal').classList.add('active');
+        document.getElementById('authKey').focus();
+      }
+
+      function closeAuth() {
+        document.getElementById('authModal').classList.remove('active');
+      }
+
+      function verifyAccess() {
+        const input = document.getElementById('authKey').value;
+        const storageKey = getStorageKey();
+        let attempts = parseInt(localStorage.getItem(storageKey + '_attempts') || 0);
+        
+        const validPassword = getValidPassword();
+        
+        if (input === validPassword) {
+          document.getElementById('authResult').innerText = '✓ Доступ разрешён';
+          document.getElementById('authResult').style.color = '#10b981';
+          localStorage.setItem(storageKey + '_attempts', '0');
+          
+          setTimeout(() => {
+            closeAuth();
+            openAdvanced();
+          }, 1000);
+        } else {
+          attempts++;
+          localStorage.setItem(storageKey + '_attempts', attempts.toString());
+          
+          document.getElementById('authResult').innerText = '✗ Неверный ключ. Попыток: ' + attempts + '/2';
+          document.getElementById('authResult').style.color = '#ef4444';
+          
+          if (attempts >= 2) {
+            setTimeout(() => {
+              closeAuth();
+              showBlockedMessage();
+            }, 1500);
+          }
+        }
+      }
+
+      function openAdvanced() {
+        document.getElementById('advancedModal').classList.add('active');
+      }
+
+      function closeAdvanced() {
+        document.getElementById('advancedModal').classList.remove('active');
+      }
+
+      function showBlockedMessage() {
+        const modal = document.createElement('div');
+        modal.className = 'modal active';
+        modal.innerHTML = `
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" style="color: #ef4444;">🚫 Доступ заблокирован</h3>
+            </div>
+            <p class="muted-block mb-20">
+              1Превышено количество попыток доступа. Система заблокирована для этого устройства.
+            </p>
+            <div style="text-align: center;">
+              <button class="btn" onclick="this.closest('.modal').remove()">Закрыть</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      }
+
+      return {
+        checkAccessRights,
+        closeAuth,
+        verifyAccess,
+        closeAdvanced
+      };
+    })();
+
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', function() {
+      const splash = document.getElementById('splash');
+      const splashCross = document.getElementById('splashCross');
+      const site = document.getElementById('site');
+
+      splashCross.addEventListener('click', () => {
+        splashCross.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        splashCross.style.transform = 'scale(1.2) rotate(10deg)';
+        splashCross.style.opacity = '0.7';
+        
+        setTimeout(() => {
+          splashCross.style.transform = 'scale(25) rotate(45deg)';
+          splashCross.style.opacity = '0';
+        }, 300);
+        
+        setTimeout(() => {
+          splash.classList.add('hidden');
+          site.classList.add('visible');
+          SecuritySystem.initBackground();
+        }, 800);
+      });
+
+      const logo = document.getElementById('logo');
+      let lastClick = 0;
+      logo.addEventListener('click', (e) => {
+        const now = Date.now();
+        if (e.altKey && now - lastClick < 400) {
+          SecuritySystem.checkAccessRights();
+        }
+        lastClick = now;
+      });
+
+      // Плавная прокрутка
+      document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Анимация появления
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
+      });
+
+      console.log('%c🔒 Система защиты активирована', 'color: #8b5cf6; font-size: 14px; font-weight: bold;');
+    });
+
+    // Добавляем функцию initBackground в SecuritySystem
+    SecuritySystem.initBackground = function() {
+      const container = document.getElementById('bgAnimation');
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.width = Math.random() * 4 + 2 + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.background = i % 3 === 0 ? 'var(--accent)' : i % 3 === 1 ? 'var(--accent-2)' : 'var(--accent-3)';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        container.appendChild(particle);
+      }
+    };
+  </script>
+</body>
+</html>
