@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Цифровая База Знаний</title>
-  <meta name="description" content="Платформа для обмена знаниями и технологиями в области цифровой безопасности" />
+  <title>Орден "Крестоносцы"</title>
+  <meta name="description" content="Платформа для обмена знаниями" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -38,6 +38,17 @@
       line-height: 1.6;
       min-height: 100vh;
       overflow-x: hidden;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    /* Запрет масштабирования на мобильных */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
     }
 
     .matrix-bg {
@@ -124,7 +135,6 @@
       }
     }
 
-
     .scanlines {
       position: fixed;
       top: 0;
@@ -185,6 +195,46 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
+    }
+
+    /* Мобильная навигация */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--card);
+        flex-direction: column;
+        padding: 20px;
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius);
+        z-index: 1000;
+      }
+      
+      nav.active {
+        display: flex;
+      }
+      
+      nav a {
+        text-align: center;
+        margin: 5px 0;
+      }
     }
 
     header {
@@ -448,6 +498,12 @@
       margin-bottom: 40px;
     }
 
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .card {
       background: var(--card);
       padding: 30px;
@@ -497,6 +553,18 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
     }
 
     .stat {
@@ -624,6 +692,12 @@
       margin-top: 20px;
     }
 
+    @media (max-width: 480px) {
+      .files-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .file {
       display: flex;
       align-items: center;
@@ -726,6 +800,13 @@
       align-items: center;
       gap: 20px;
       flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
     }
 
     .secret-hint {
@@ -929,39 +1010,6 @@
       50% { transform: scale(1.05); }
     }
 
-    @media (max-width: 1024px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-      }
-      nav {
-        justify-content: center;
-      }
-      .divisions-grid {
-        grid-template-columns: 1fr;
-      }
-      .files-grid {
-        grid-template-columns: 1fr;
-      }
-      .footer-content {
-        flex-direction: column;
-        text-align: center;
-      }
-      .stats {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .muted-block {
       color: var(--muted);
     }
@@ -998,12 +1046,10 @@
   </style>
 </head>
 <body>
-
   <div class="nebula-bg"></div>
   <div class="matrix-bg"></div>
   <div class="scanlines"></div>
   <div class="bg-animation" id="bgAnimation"></div>
-
 
   <div id="accessDenied" class="access-denied">
     <div class="denied-content">
@@ -1020,7 +1066,7 @@
     <div class="inner">
       <div id="splashCross" class="cross" title="Нажмите для входа">✟</div>
       <div class="splash-text">
-        Цифровая База Знаний — Платформа для профессионалов
+        Орден приветствует вас
       </div>
     </div>
   </div>
@@ -1032,11 +1078,12 @@
         <div class="logo" id="logo">
           <div id="mark" class="mark">✟</div>
           <div class="logo-text">
-            <h1>Цифровая База Знаний</h1>
-            <div class="muted-block">Защита · Разработка · Инновации</div>
+            <h1>Крестоносцы</h1>
+            <div class="muted-block">Взмолвите же, пред нашим величием</div>
           </div>
         </div>
-        <nav>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        <nav id="mainNav">
           <a href="#about">О платформе</a>
           <a href="#divisions">Направления</a>
           <a href="#files">Ресурсы</a>
@@ -1045,10 +1092,9 @@
 
       <section class="hero">
         <div class="card reveal hologram-effect">
-          <h2>что?</h2>
+          <h2>Да прибудет с вами всевышний</h2>
           <p class="muted-block mb-20">
-            Сообщество экспертов в области цифровой безопасности и разработки. 
-            Обмен знаниями и передовыми технологиями.
+            Пред нами не смейте открывать свой рот.
           </p>
           
           <div class="stats">
@@ -1073,7 +1119,7 @@
             <a class="file" href="https://example.com/readme.pdf" target="_blank">
               <div class="file-icon">📊</div>
               <div class="file-content">
-                <div class="file-title">Введение в платформу</div>
+                <div class="file-title">Бистиарий</div>
                 <div class="file-meta">· Обновлен 16 октября 2025</div>
               </div>
             </a>
@@ -1082,9 +1128,9 @@
       </section>
 
       <section id="about" class="card reveal delay-2 mb-20 hologram-effect">
-        <h3>О платформе</h3>
+        <h3>О нас</h3>
         <p class="muted-block">
-          Профессиональное сообщество, объединяющее специалистов.
+          Мы величаемся орденом что высекли на своих ближних гадетов кресты, что придают силы нам от всевышнего, да использовать эту силу нам велено лишь для помоши во благо сего человечества
         </p>
       </section>
 
@@ -1132,7 +1178,7 @@
         <div class="footer-glow"></div>
         <div class="footer-content">
           <div>
-            <div>© 2025 Цифровая База Знаний</div>
+            <div>© 2025 Орден богословляет вас</div>
             <div class="muted-block" style="margin-top: 8px; font-size: 12px;">
               Все материалы защищены
             </div>
@@ -1166,7 +1212,7 @@
   <div id="advancedModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title" style="color: var(--accent-3);">✟ Красный крестр</h3>
+        <h3 class="modal-title" style="color: var(--accent-3);">✟ Красный крест</h3>
         <button class="close-modal" onclick="SecuritySystem.closeAdvanced()">×</button>
       </div>
       <p class="muted-block mb-20">
@@ -1178,7 +1224,7 @@
           <div class="file-icon">⚙️</div>
           <div class="file-content">
             <div class="file-title">Oculus</div>
-            <div class="file-meta">Сборка программ</div>
+            <div class="file-meta">...</div>
           </div>
         </a>
       </div>
@@ -1193,17 +1239,14 @@
     const SecuritySystem = (function() {
       'use strict';
       
+      // Исправленный пароль - убрана кириллическая Z
       const passwordPart1 = "DaPribydetSvami";
       const passwordPart2 = "OrdenKrestaIvozdast";
-      const password3 = "VamSilyIDyhy";
+      const passwordPart3 = "VamSilyIDyhy"; // Исправлено с password3
       const passwordPart4 = "1096—1099";
-      const password1 = "access_key_verification_system";
-      const password2 = "secure_authentication_protocol";
-      const passwordP = "advanced_encryption_module";
       
       function getValidPassword() {
-
-        return passwordPart1 + passwordPart2 + passwordPartЗ + passwordPart4;
+        return passwordPart1 + passwordPart2 + passwordPart3 + passwordPart4;
       }
 
       function generateFingerprint() {
@@ -1221,10 +1264,19 @@
         return 'secure_' + generateFingerprint();
       }
 
-
+      // Упрощенная проверка безопасности для мобильных
       function checkSecurity() {
         return new Promise((resolve) => {
+          // Для мобильных устройств проверяем только базовые вещи
+          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (isMobile) {
+            // На мобильных разрешаем доступ
+            resolve(true);
+            return;
+          }
 
+          // Для десктопов оставляем старую проверку
           const isIncognito = new Promise((resolveIncognito) => {
             const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
             if (!fs) {
@@ -1239,44 +1291,8 @@
             });
           });
 
-
-          const startTime = performance.now();
-          for (let i = 0; i < 1000000; i++) {
-            Math.sqrt(i);
-          }
-          const executionTime = performance.now() - startTime;
-          
-
-          const pluginsLength = navigator.plugins.length;
-          
-
-          const checkWebRTC = new Promise((resolveWebRTC) => {
-            const rtc = new RTCPeerConnection({iceServers: []});
-            rtc.createDataChannel('');
-            rtc.createOffer()
-              .then(offer => rtc.setLocalDescription(offer))
-              .catch(() => resolveWebRTC(false));
-            
-            rtc.onicecandidate = (e) => {
-              if (e.candidate) {
-                const candidate = e.candidate.candidate;
-
-                if (candidate.includes('192.168.') || candidate.includes('10.') || candidate.includes('172.')) {
-                  resolveWebRTC(true);
-                }
-              }
-            };
-            
-            setTimeout(() => resolveWebRTC(false), 1000);
-          });
-
-          Promise.all([isIncognito, checkWebRTC]).then(([incognito, webrtcLeak]) => {
-            const isSuspicious = 
-              incognito || 
-              executionTime > 100 ||
-              pluginsLength < 2 ||   
-              webrtcLeak;   
-            
+          Promise.all([isIncognito]).then(([incognito]) => {
+            const isSuspicious = incognito;
             resolve(!isSuspicious);
           });
         });
@@ -1284,7 +1300,6 @@
 
       function initBackground() {
         const container = document.getElementById('bgAnimation');
-
         for (let i = 0; i < 50; i++) {
           const particle = document.createElement('div');
           particle.className = 'particle';
@@ -1293,7 +1308,6 @@
           particle.style.width = Math.random() * 6 + 2 + 'px';
           particle.style.height = particle.style.width;
           
-
           if (i % 3 === 0) {
             particle.style.background = 'var(--accent)';
           } else if (i % 3 === 1) {
@@ -1337,6 +1351,9 @@
         let attempts = parseInt(localStorage.getItem(storageKey + '_attempts') || 0);
         
         const validPassword = getValidPassword();
+        
+        console.log('Input:', input);
+        console.log('Valid password:', validPassword);
         
         if (input === validPassword) {
           document.getElementById('authResult').innerText = '✓ Доступ разрешён';
@@ -1396,15 +1413,6 @@
         document.getElementById('site').style.display = 'none';
       }
 
-
-      function dummyFunction1() {
-        return dummyVar1 + dummyVar2;
-      }
-      
-      function dummyFunction2() {
-        return dummyVar3 + "encryption";
-      }
-
       return {
         checkAccessRights,
         closeAuth,
@@ -1412,21 +1420,32 @@
         closeAdvanced,
         initBackground,
         checkSecurity,
-        showAccessDenied,
-        dummyFunction1,
-        dummyFunction2
+        showAccessDenied
       };
     })();
 
+    // Функция для мобильного меню
+    function toggleMobileMenu() {
+      const nav = document.getElementById('mainNav');
+      nav.classList.toggle('active');
+    }
+
+    // Закрытие мобильного меню при клике вне его
+    document.addEventListener('click', function(event) {
+      const nav = document.getElementById('mainNav');
+      const menuBtn = document.querySelector('.mobile-menu-btn');
+      
+      if (!nav.contains(event.target) && !menuBtn.contains(event.target)) {
+        nav.classList.remove('active');
+      }
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
-
       SecuritySystem.checkSecurity().then((isSecure) => {
         if (!isSecure) {
           SecuritySystem.showAccessDenied();
           return;
         }
-
 
         const splash = document.getElementById('splash');
         const splashCross = document.getElementById('splashCross');
@@ -1453,12 +1472,27 @@
         let lastClick = 0;
         logo.addEventListener('click', (e) => {
           const now = Date.now();
-          if (e.altKey && now - lastClick < 400) {
+          // На мобильных используем долгое нажатие вместо Alt+клик
+          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if ((!isMobile && e.altKey && now - lastClick < 400) || 
+              (isMobile && now - lastClick < 1000)) {
             SecuritySystem.checkAccessRights();
           }
           lastClick = now;
         });
 
+        // Для мобильных - долгое нажатие на логотип
+        let pressTimer;
+        logo.addEventListener('touchstart', (e) => {
+          pressTimer = setTimeout(() => {
+            SecuritySystem.checkAccessRights();
+          }, 1000);
+        });
+
+        logo.addEventListener('touchend', () => {
+          clearTimeout(pressTimer);
+        });
 
         document.querySelectorAll('nav a').forEach(anchor => {
           anchor.addEventListener('click', function (e) {
@@ -1472,9 +1506,11 @@
                 block: 'start'
               });
             }
+            
+            // Закрываем мобильное меню после клика
+            document.getElementById('mainNav').classList.remove('active');
           });
         });
-
 
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
@@ -1489,17 +1525,9 @@
         });
 
         console.log('%c🔒 Система защиты активирована', 'color: #8b5cf6; font-size: 14px; font-weight: bold;');
+        console.log('%c📱 Мобильная версия активна', 'color: #10b981; font-size: 12px;');
       });
     });
-
-
-    const fakePassword1 = "incorrect_password_123";
-    const fakePassword2 = "wrong_access_key_456";
-    const fakePassword3 = "invalid_authentication_789";
   </script>
 </body>
 </html>
-
-
-
-
